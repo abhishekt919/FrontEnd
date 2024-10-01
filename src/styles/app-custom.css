@@ -1,0 +1,265 @@
+:root {
+  --white: #fff;
+  --logo: #334354;
+  --silver: #cecece;
+  --black-pearl: #091b27;
+  --pale-sky: #6b7280;
+  --gold: #feae01;
+  --landing-bg: #f1f5f9;
+}
+
+@property --offset {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0;
+}
+
+.custom-span {
+  color: var(--pale-sky);
+}
+
+.MuiTablePagination-select {
+  min-height: 1px !important;
+}
+
+.app-header {
+  box-shadow: none;
+  background: white;
+  position: fixed;
+}
+
+.app-header-padding {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+.app-header a {
+  color: var(--black-pearl) !important;
+  text-transform: uppercase !important;
+  margin-left: 20px;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+.app-header a:hover {
+  color: rgb(0, 120, 255) !important;
+  --offset: 0.5em;
+  text-decoration: underline 0.2em !important;
+  text-underline-offset: var(--offset, 0.5em);
+  text-decoration-color: rgb(0, 120, 255) !important;
+  transition: --offset 400ms, text-decoration-color 400ms;
+}
+
+.header-apps {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+}
+
+.header-apps div {
+  height: 150px;
+  margin-right: 10px;
+}
+
+.header-apps a {
+  background-color: transparent !important;
+  text-decoration: none;
+  border: none !important;
+}
+
+.header-apps img {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.app-header .menu-icon {
+  margin-left: 2.4rem;
+  background-color: var(--black-pearl);
+  border-radius: none !important;
+}
+
+.app-features {
+  background-color: var(--landing-bg) !important;
+}
+
+.app-footer {
+  background-color: var(--black-pearl) !important;
+  color: var(--white) !important;
+}
+
+.app-footer ul li {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--silver);
+}
+
+.app-footer ul li a {
+  color: var(--gold) !important;
+  text-decoration: none !important;
+}
+
+.app-footer ul li a:hover {
+  text-decoration: underline !important;
+}
+
+.app-footer .apps {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-footer .apps a {
+  background-color: transparent !important;
+  text-decoration: none;
+  border: none !important;
+}
+
+.app-footer .apps img {
+  width: 95% !important;
+}
+
+.industry-icon {
+  width: 40px;
+  height: 40px;
+  opacity: 0.6;
+}
+
+.height90 {
+  max-height: 90px;
+  overflow: hidden;
+}
+
+.StripeElement {
+  display: block;
+  margin: 10px 0 20px 0;
+  line-height: 50px;
+  max-width: 100%;
+  padding: 16.5px 14px;
+  font-size: 1.4rem;
+  font-family: "Helvetica", Arial, sans-serif;
+  font-weight: 400;
+  border: 1px solid rgba(0, 0, 0, 0.23) !important;
+  border-radius: 4px;
+}
+
+.formTopDropdown div#demo-dialog-select {
+  min-height: auto;
+  height: 4px;
+  position: relative;
+  top: -7px;
+}
+
+.formTopDropdown fieldset legend {
+  display: none;
+}
+
+.formTopDropdown {
+  position: relative;
+  top: 6px;
+  min-height: 36px;
+}
+
+.formTopDropdown .MuiInputBase-root.MuiOutlinedInput-root {
+  min-height: 36px;
+}
+
+/*fullcalendar Fix*/
+.fc-scrollgrid-section-liquid {
+  height: 1px !important;
+}
+
+.rs-anim-fade.rs-anim-in.placement-bottom-start.rs-picker-daterange-menu.rs-picker-menu {
+  position: absolute;
+  z-index: 10;
+}
+
+.datepickerCustomCss .rs-picker-default .rs-picker-toggle.rs-btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 25px;
+  border-color: #e2e8f0;
+}
+
+.formTopDropdown fieldset,
+.datepickerCustomCss .rs-picker-default:not(.rs-picker-disabled) .rs-btn:hover,
+.rs-picker-default:not(.rs-picker-disabled) .rs-picker-toggle:hover {
+  border-color: #e2e8f0 !important;
+  border-width: 1px !important;
+}
+
+.datepickerCustomCss .rs-picker-has-value .rs-btn .rs-picker-toggle-value,
+.rs-picker-has-value .rs-picker-toggle .rs-picker-toggle-value {
+  color: var(--black-pearl);
+}
+
+.datepickerCustomCss .rs-picker-toggle-active,
+.datepickerCustomCss .rs-picker.rs-picker-focused {
+  box-shadow: unset;
+}
+
+.data-uploader h5 {
+  color: var(--white) !important;
+}
+
+.data-uploader span {
+  color: var(--white) !important;
+}
+
+.autoCompleteDropdown label.MuiFormLabel-filled,
+.autoCompleteDropdown label.Mui-focused,
+.autoCompleteDropdown legend {
+  display: none;
+}
+
+.autoCompleteDropdown .MuiInputBase-root {
+  border-radius: 50px;
+  position: absolute;
+  /* top: 25px; */
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.autoCompleteDropdown label {
+  position: relative;
+  top: -11px;
+}
+
+.autoCompleteDropdown .MuiInputBase-root.MuiOutlinedInput-root {
+  min-height: 36px;
+}
+
+.autoCompleteDropdown {
+  position: relative;
+  top: 6px;
+}
+
+@media only screen and (max-width: 767px) {
+  .autoCompleteDropdown {
+    margin-bottom: 20px;
+  }
+}
+
+.muiltr-j5h6pi-MuiPopper-root {
+  z-index: 9999 !important;
+}
+
+.assetRecallBox {
+  height: calc(100vh - 270px);
+}
+
+.MuiSnackbar-root {
+  z-index: 999999;
+}
+
+@media not print {
+  .showLogo {
+    display: none;
+  }
+}
+
+.MuiInputBase-sizeSmall {
+  min-height: 30px !important;
+}

@@ -1,0 +1,14 @@
+/**
+ * Component classes registered by plugins.
+ *
+ */
+
+@import 'print.css';
+
+@import 'tables.css';
+
+@import 'prism.css';
+
+@import 'rsuite/dist/rsuite-no-reset.min.css';
+
+@tailwind components;
