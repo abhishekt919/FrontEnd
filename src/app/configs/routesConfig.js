@@ -17,6 +17,7 @@ import CompanyConfig from '../main/affiliated-companies/config';
 import GameConfig from '../main/Game/config';
 import StudentConfig from '../main/Student-Management/config';
 import ContactConfig from '../main/Contact/ContactConfig';
+import NewProductConfig from '../main/new-product/config';
 
 const routeConfig = [
   ...AuthPagesConfig,
@@ -31,7 +32,8 @@ const routeConfig = [
   CompanyConfig,
   GameConfig,
   StudentConfig,
-  ContactConfig
+  ContactConfig,
+  NewProductConfig
 ];
 
 const routes = [

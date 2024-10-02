@@ -67,6 +67,13 @@ const navigationConfig = [
     url: 'contact',
   },
   {
+    id: 'new-product',
+    title: 'New Product',
+    type: 'item',
+    icon: 'material-outline:people',
+    url: 'new-product',
+  },
+  {
     id: 'settings',
     title: 'Settings',
     translate: 'SETTINGS',
