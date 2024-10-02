@@ -12,7 +12,9 @@ import {
   Paper,
   TablePagination,
   Dialog,
-  DialogTitle, DialogContent, DialogActions,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { getProducts, deleteProduct } from "./../store/productSlice";
@@ -40,7 +42,9 @@ function ProductList(props) {
       })
       .catch((error) => {
         setLoading(false);
-        dispatch(showMessage({ message: "Failed to load products", variant: "error" }));
+        dispatch(
+          showMessage({ message: "Failed to load products", variant: "error" })
+        );
         console.error("Error fetching products:", error);
       });
   }, [rowsPerPage, dispatch]);
@@ -149,7 +153,11 @@ function ProductList(props) {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleConfirmDelete} color="error" variant="contained">
+          <Button
+            onClick={handleConfirmDelete}
+            color="error"
+            variant="contained"
+          >
             Delete
           </Button>
         </DialogActions>
