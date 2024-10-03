@@ -46,8 +46,6 @@ function AddHeader(props) {
       }
     });
   }
-  console.log("Dirty Fields:", dirtyFields);
-  console.log("Is Valid:", isValid);
 
   return (
     <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-32 px-24 md:px-32">

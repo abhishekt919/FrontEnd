@@ -64,8 +64,8 @@ function ProductList(props) {
   // Function to confirm deletion
   const handleConfirmDelete = () => {
     dispatch(deleteProduct(selectedProductId)).then(() => {
-      // Refetch products after deletion
       dispatch(getProducts({ limit: rowsPerPage }));
+      dispatch(showMessage({ message: "Product has been deleted successfully."}));
       handleClose();
     });
   };
