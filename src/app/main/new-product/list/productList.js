@@ -1,4 +1,3 @@
-// src/components/ProductList.js
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -18,7 +17,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, deleteProduct, updateProduct } from "./../store/productSlice";
+import { getProducts, deleteProduct } from "./../store/productSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
 import { LoadingView, NoRecordsView } from "app/shared-components/index";
@@ -73,7 +72,7 @@ function ProductList(props) {
   const handleConfirmDelete = () => {
     dispatch(deleteProduct(selectedProductId)).then(() => {
       getProductsCall();
-      dispatch(showMessage({ message: "Product has been deleted successfully."}));
+      dispatch(showMessage({ message: "Product has been deleted successfully." }));
       handleCloseDelete();
     });
   };
@@ -195,6 +194,7 @@ function ProductList(props) {
         open={openUpdateModal}
         onClose={handleCloseUpdate}
         product={selectedProduct}
+        refreshProducts={getProductsCall} // Pass refresh function to modal
       />
     </Paper>
   );
