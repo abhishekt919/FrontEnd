@@ -30,6 +30,14 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+export const updateProduct = createAsyncThunk(
+  'products/updateProduct',
+  async ({ id, data }) => {
+      const response = await axios.put(`products/update/${id}`, data);
+      return response.data; // Assuming the API returns the updated product
+  }
+);
+
 const productSlice = createSlice({
   name: "productModule",
   initialState: {

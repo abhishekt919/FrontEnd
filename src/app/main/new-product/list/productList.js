@@ -1,3 +1,4 @@
+// src/components/ProductList.js
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -16,12 +17,13 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { getProducts, deleteProduct } from "./../store/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts, deleteProduct, updateProduct } from "./../store/productSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
 import { LoadingView, NoRecordsView } from "app/shared-components/index";
 import { showMessage } from "app/store/fuse/messageSlice";
+import UpdateProductModal from "./UpdateProduct"; // Import the modal
 
 function ProductList(props) {
   const dispatch = useDispatch();
@@ -29,15 +31,17 @@ function ProductList(props) {
   const [products, setProducts] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isLoading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Fetching the products
   useEffect(() => {
     getProductsCall();
   }, [rowsPerPage, dispatch]);
 
-  function getProductsCall(){
+  function getProductsCall() {
     setLoading(true);
     dispatch(getProducts({ limit: rowsPerPage }))
       .then((result) => {
@@ -54,14 +58,14 @@ function ProductList(props) {
   }
 
   // Function to open the delete modal
-  const handleOpen = (productId) => {
+  const handleOpenDelete = (productId) => {
     setSelectedProductId(productId);
-    setOpen(true);
+    setOpenDeleteDialog(true);
   };
 
-  // Function to close the modal
-  const handleClose = () => {
-    setOpen(false);
+  // Function to close the delete modal
+  const handleCloseDelete = () => {
+    setOpenDeleteDialog(false);
     setSelectedProductId(null);
   };
 
@@ -70,8 +74,20 @@ function ProductList(props) {
     dispatch(deleteProduct(selectedProductId)).then(() => {
       getProductsCall();
       dispatch(showMessage({ message: "Product has been deleted successfully."}));
-      handleClose();
+      handleCloseDelete();
     });
+  };
+
+  // Function to open the update modal
+  const handleOpenUpdate = (product) => {
+    setSelectedProduct(product);
+    setOpenUpdateModal(true);
+  };
+
+  // Function to close the update modal
+  const handleCloseUpdate = () => {
+    setOpenUpdateModal(false);
+    setSelectedProduct(null);
   };
 
   if (isLoading) return <LoadingView />;
@@ -117,10 +133,17 @@ function ProductList(props) {
                       </TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => handleOpenUpdate(row)}
+                        >
+                          Update
+                        </Button>
                         <IconButton
                           aria-label="delete"
                           color="error"
-                          onClick={() => handleOpen(row._id)}
+                          onClick={() => handleOpenDelete(row._id)}
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -148,13 +171,13 @@ function ProductList(props) {
       )}
 
       {/* Delete Confirmation Modal */}
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={openDeleteDialog} onClose={handleCloseDelete}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
           Are you sure you want to delete this product?
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleCloseDelete} color="primary">
             Cancel
           </Button>
           <Button
@@ -166,6 +189,13 @@ function ProductList(props) {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Update Product Modal */}
+      <UpdateProductModal
+        open={openUpdateModal}
+        onClose={handleCloseUpdate}
+        product={selectedProduct}
+      />
     </Paper>
   );
 }
