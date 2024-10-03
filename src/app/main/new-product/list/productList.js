@@ -34,6 +34,10 @@ function ProductList(props) {
 
   // Fetching the products
   useEffect(() => {
+    getProductsCall();
+  }, [rowsPerPage, dispatch]);
+
+  function getProductsCall(){
     setLoading(true);
     dispatch(getProducts({ limit: rowsPerPage }))
       .then((result) => {
@@ -47,7 +51,7 @@ function ProductList(props) {
         );
         console.error("Error fetching products:", error);
       });
-  }, [rowsPerPage, dispatch]);
+  }
 
   // Function to open the delete modal
   const handleOpen = (productId) => {
@@ -64,7 +68,7 @@ function ProductList(props) {
   // Function to confirm deletion
   const handleConfirmDelete = () => {
     dispatch(deleteProduct(selectedProductId)).then(() => {
-      dispatch(getProducts({ limit: rowsPerPage }));
+      getProductsCall();
       dispatch(showMessage({ message: "Product has been deleted successfully."}));
       handleClose();
     });

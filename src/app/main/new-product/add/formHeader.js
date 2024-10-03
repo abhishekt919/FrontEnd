@@ -26,7 +26,6 @@ function AddHeader(props) {
       quantity: inputJson.quantity,
     };
     addUpdateProduct(inputData, "ADD");
-    console.log("InputData", inputData);
   };
 
   function addUpdateProduct(inputData, type) {

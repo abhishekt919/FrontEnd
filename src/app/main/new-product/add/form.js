@@ -85,6 +85,7 @@ function AddForm() {
                 error={!!errors.quantity}
                 helperText={errors?.quantity?.message}
                 required
+                type="number"
               ></TextField>
             )}
           />

@@ -7,14 +7,14 @@ const NoRecordsView = ({ message, btnText, onButtonClick, navigateTo }) => {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.1 } }}
-            className="flex flex-col flex-1 items-center justify-center h-full"
+            className="absolute inset-0 flex flex-col items-center justify-center"
         >
-            <Typography color="text.secondary" variant="h5">
+            <Typography color="text.secondary" variant="h5" align="center">
                 {message ? message : "There is no such record!"}
             </Typography>
             {onButtonClick && (
                 <Button
-                    className="mt-24"
+                    className="mt-4"
                     variant="outlined"
                     onClick={onButtonClick}
                     color="inherit"
@@ -24,7 +24,7 @@ const NoRecordsView = ({ message, btnText, onButtonClick, navigateTo }) => {
             )}
             {navigateTo && (
                 <Button
-                    className="mt-24"
+                    className="mt-4"
                     component={Link}
                     variant="outlined"
                     to={navigateTo}
