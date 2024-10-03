@@ -19,6 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, deleteProduct } from "./../store/productSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { IconButton } from "@mui/material";
 import { LoadingView, NoRecordsView } from "app/shared-components/index";
 import { showMessage } from "app/store/fuse/messageSlice";
@@ -72,7 +73,9 @@ function ProductList(props) {
   const handleConfirmDelete = () => {
     dispatch(deleteProduct(selectedProductId)).then(() => {
       getProductsCall();
-      dispatch(showMessage({ message: "Product has been deleted successfully." }));
+      dispatch(
+        showMessage({ message: "Product has been deleted successfully." })
+      );
       handleCloseDelete();
     });
   };
@@ -132,13 +135,12 @@ function ProductList(props) {
                       </TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
-                        <Button
-                          variant="outlined"
+                        <IconButton
                           color="primary"
                           onClick={() => handleOpenUpdate(row)}
                         >
-                          Update
-                        </Button>
+                          <EditIcon />
+                        </IconButton>
                         <IconButton
                           aria-label="delete"
                           color="error"
