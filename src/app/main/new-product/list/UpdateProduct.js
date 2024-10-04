@@ -156,10 +156,10 @@ const UpdateProductModal = ({ open, onClose, product, refreshProducts }) => {
 
                     {/* Action Buttons */}
                     <div className="flex justify-end mt-4">
-                        <Button variant="contained" color="primary" type="submit">
+                        <Button variant="contained" color="info" type="submit">
                             Update
                         </Button>
-                        <Button onClick={onClose} className="ml-2">
+                        <Button onClick={onClose} variant="outlined" className="ml-2">
                             Cancel
                         </Button>
                     </div>
