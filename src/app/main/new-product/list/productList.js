@@ -15,7 +15,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Tooltip
+  Tooltip,
+  TableSortLabel,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -35,6 +36,10 @@ function ProductList(props) {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [sortOrder, setSortOrder] = useState({
+    column: '',
+    direction: 'asc',
+  });
 
   // Fetching the products
   useEffect(() => {
@@ -57,7 +62,24 @@ function ProductList(props) {
       });
   }
 
-  // Function to open the delete modal
+  const handleRequestSort = (event, property) => {
+    const isAsc = sortOrder.column === property && sortOrder.direction === 'asc';
+    setSortOrder({
+      column: property,
+      direction: isAsc ? 'desc' : 'asc',
+    });
+  };
+
+  const sortedProducts = products.slice().sort((a, b) => {
+    if (sortOrder.column) {
+      const orderMultiplier = sortOrder.direction === 'asc' ? 1 : -1;
+      if (a[sortOrder.column] < b[sortOrder.column]) return -1 * orderMultiplier;
+      if (a[sortOrder.column] > b[sortOrder.column]) return 1 * orderMultiplier;
+    }
+    return 0;
+  });
+
+  // Delete and update logic here...
   const handleOpenDelete = (productId) => {
     setSelectedProductId(productId);
     setOpenDeleteDialog(true);
@@ -92,8 +114,6 @@ function ProductList(props) {
     setSelectedProduct(null);
   };
 
-  if (isLoading) return <LoadingView />;
-
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       {products.length === 0 ? (
@@ -104,17 +124,49 @@ function ProductList(props) {
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  <TableCell>ProductID</TableCell>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Price</TableCell>
+                  <TableCell>
+                    <TableSortLabel
+                      active={sortOrder.column === 'productId'}
+                      direction={sortOrder.column === 'productId' ? sortOrder.direction : 'asc'}
+                      onClick={() => handleRequestSort(null, 'productId')}
+                    >
+                      ProductID
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell>
+                    <TableSortLabel
+                      active={sortOrder.column === 'title'}
+                      direction={sortOrder.column === 'title' ? sortOrder.direction : 'asc'}
+                      onClick={() => handleRequestSort(null, 'title')}
+                    >
+                      Title
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell>
+                    <TableSortLabel
+                      active={sortOrder.column === 'price'}
+                      direction={sortOrder.column === 'price' ? sortOrder.direction : 'asc'}
+                      onClick={() => handleRequestSort(null, 'price')}
+                    >
+                      Price
+                    </TableSortLabel>
+                  </TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Status</TableCell>
-                  <TableCell>Quantity</TableCell>
+                  <TableCell>
+                    <TableSortLabel
+                      active={sortOrder.column === 'quantity'}
+                      direction={sortOrder.column === 'quantity' ? sortOrder.direction : 'asc'}
+                      onClick={() => handleRequestSort(null, 'quantity')}
+                    >
+                      Quantity
+                    </TableSortLabel>
+                  </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products
+                {sortedProducts
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
@@ -135,6 +187,8 @@ function ProductList(props) {
                       </TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
+                        {/* Action buttons */}
+                        <TableCell>
                         <Tooltip title="Edit">
                           <IconButton
                             color="primary"
@@ -153,29 +207,27 @@ function ProductList(props) {
                           </IconButton>
                         </Tooltip>
                       </TableCell>
+                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
             </Table>
           </TableContainer>
-
-          {/* Pagination */}
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25, 50]}
+            rowsPerPageOptions={[5, 10, 25, 100]}
             component="div"
             count={products.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(event, newPage) => setPage(newPage)}
             onRowsPerPageChange={(event) => {
-              setRowsPerPage(parseInt(event.target.value, 10));
+              setRowsPerPage(+event.target.value);
               setPage(0);
             }}
           />
         </>
       )}
-
-      {/* Delete Confirmation Modal */}
+      {/* Delete dialog and update modal */}
       <Dialog open={openDeleteDialog} onClose={handleCloseDelete}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>

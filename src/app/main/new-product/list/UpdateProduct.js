@@ -13,24 +13,33 @@ const schema = yup.object().shape({
         .string()
         .required("This field is required.")
         .max(50, "Not more than 50 characters."),
-    price: yup.number().required("Please enter a price for your product"),
-    description: yup.string().required("Enter your product description"),
-    quantity: yup.number().required("Enter your product quantity").min(0, "Quantity cannot be negative"),
+    price: yup
+        .number()
+        .required("Please enter a price for your product")
+        .min(1, "Price cannot be negative or zero")
+        .typeError("Price must be a number"), // Handle number type validation
+    description: yup
+        .string()
+        .required("Enter your product description"),
+    quantity: yup
+        .number()
+        .required("Enter your product quantity")
+        .min(0, "Quantity cannot be negative")
+        .typeError("Quantity must be a number"),
 });
 
 const UpdateProductModal = ({ open, onClose, product, refreshProducts }) => {
     const dispatch = useDispatch();
-    
+
     const {
         control,
         handleSubmit,
         setValue,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(schema), 
     });
 
-    // Load the product data when the modal opens
     useEffect(() => {
         if (product) {
             setValue('title', product.title || '');
@@ -42,7 +51,6 @@ const UpdateProductModal = ({ open, onClose, product, refreshProducts }) => {
 
     // Handle form submission to update product
     const onSubmit = async (data) => {
-        // Determine product status based on quantity
         let status;
         if (data.quantity > 0) {
             status = 'available';
@@ -54,16 +62,11 @@ const UpdateProductModal = ({ open, onClose, product, refreshProducts }) => {
 
         try {
             await dispatch(updateProduct({ id: product._id, data: { ...data, status } })).unwrap();
-            // Show a success message (optional)
             dispatch(showMessage({ message: 'Product updated successfully', variant: 'success' }));
-            // Refresh the product list
             refreshProducts();
-            // Close the modal after update
-            onClose();
+            onClose(); 
         } catch (error) {
-            // Handle error (optional)
             dispatch(showMessage({ message: 'Failed to update product', variant: 'error' }));
-            console.error('Update failed:', error);
         }
     };
 
@@ -76,6 +79,7 @@ const UpdateProductModal = ({ open, onClose, product, refreshProducts }) => {
                 <hr className="my-2" style={{ borderColor: '#ccc', borderWidth: '1px' }} />
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
+                        {/* Title Field */}
                         <Grid item xs={12} sm={6}>
                             <Controller
                                 name="title"
@@ -88,11 +92,12 @@ const UpdateProductModal = ({ open, onClose, product, refreshProducts }) => {
                                         margin="normal"
                                         error={!!errors.title}
                                         helperText={errors.title?.message}
-                                        required
                                     />
                                 )}
                             />
                         </Grid>
+
+                        {/* Price Field */}
                         <Grid item xs={12} sm={6}>
                             <Controller
                                 name="price"
@@ -106,11 +111,12 @@ const UpdateProductModal = ({ open, onClose, product, refreshProducts }) => {
                                         error={!!errors.price}
                                         helperText={errors.price?.message}
                                         type="number"
-                                        required
                                     />
                                 )}
                             />
                         </Grid>
+
+                        {/* Description Field */}
                         <Grid item xs={12} sm={6}>
                             <Controller
                                 name="description"
@@ -123,11 +129,12 @@ const UpdateProductModal = ({ open, onClose, product, refreshProducts }) => {
                                         margin="normal"
                                         error={!!errors.description}
                                         helperText={errors.description?.message}
-                                        required
                                     />
                                 )}
                             />
                         </Grid>
+
+                        {/* Quantity Field */}
                         <Grid item xs={12} sm={6}>
                             <Controller
                                 name="quantity"
@@ -141,12 +148,13 @@ const UpdateProductModal = ({ open, onClose, product, refreshProducts }) => {
                                         error={!!errors.quantity}
                                         helperText={errors.quantity?.message}
                                         type="number"
-                                        required
                                     />
                                 )}
                             />
                         </Grid>
                     </Grid>
+
+                    {/* Action Buttons */}
                     <div className="flex justify-end mt-4">
                         <Button variant="contained" color="primary" type="submit">
                             Update
