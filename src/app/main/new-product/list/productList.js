@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Button,
   Chip,
-  EditIcon,
   IconButton,
   Table,
   TableBody,
@@ -16,11 +15,12 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Tooltip,
+  Tooltip
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { getProducts, deleteProduct } from "./../store/productSlice";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { LoadingView, NoRecordsView } from "app/shared-components/index";
 import { showMessage } from "app/store/fuse/messageSlice";
 import UpdateProductModal from "./UpdateProduct"; // Import the modal
