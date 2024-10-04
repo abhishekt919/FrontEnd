@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import {
   Button,
   Chip,
+  EditIcon,
+  IconButton,
   Table,
-  TextField,
   TableBody,
   TableCell,
   TableHead,
@@ -15,12 +16,11 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Tooltip,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getProducts, deleteProduct } from "./../store/productSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { IconButton } from "@mui/material";
 import { LoadingView, NoRecordsView } from "app/shared-components/index";
 import { showMessage } from "app/store/fuse/messageSlice";
 import UpdateProductModal from "./UpdateProduct"; // Import the modal
@@ -135,19 +135,23 @@ function ProductList(props) {
                       </TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
-                        <IconButton
-                          color="primary"
-                          onClick={() => handleOpenUpdate(row)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          color="error"
-                          onClick={() => handleOpenDelete(row._id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
+                        <Tooltip title="Edit">
+                          <IconButton
+                            color="primary"
+                            onClick={() => handleOpenUpdate(row)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                          <IconButton
+                            aria-label="delete"
+                            color="error"
+                            onClick={() => handleOpenDelete(row._id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   ))}
