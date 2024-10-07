@@ -20,7 +20,10 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
 import { useDispatch } from "react-redux";
+import PreviewPage from "../preview";
 import { getProducts, deleteProduct } from "./../store/productSlice";
 import { LoadingView, NoRecordsView } from "app/shared-components/index";
 import { showMessage } from "app/store/fuse/messageSlice";
@@ -32,13 +35,15 @@ function ProductList(props) {
   const [products, setProducts] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isLoading, setLoading] = useState(false);
+  const [openModal, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [sortOrder, setSortOrder] = useState({
-    column: '',
-    direction: 'asc',
+    column: "",
+    direction: "asc",
   });
 
   // Fetching the products
@@ -63,17 +68,19 @@ function ProductList(props) {
   }
 
   const handleRequestSort = (event, property) => {
-    const isAsc = sortOrder.column === property && sortOrder.direction === 'asc';
+    const isAsc =
+      sortOrder.column === property && sortOrder.direction === "asc";
     setSortOrder({
       column: property,
-      direction: isAsc ? 'desc' : 'asc',
+      direction: isAsc ? "desc" : "asc",
     });
   };
 
   const sortedProducts = products.slice().sort((a, b) => {
     if (sortOrder.column) {
-      const orderMultiplier = sortOrder.direction === 'asc' ? 1 : -1;
-      if (a[sortOrder.column] < b[sortOrder.column]) return -1 * orderMultiplier;
+      const orderMultiplier = sortOrder.direction === "asc" ? 1 : -1;
+      if (a[sortOrder.column] < b[sortOrder.column])
+        return -1 * orderMultiplier;
       if (a[sortOrder.column] > b[sortOrder.column]) return 1 * orderMultiplier;
     }
     return 0;
@@ -114,6 +121,18 @@ function ProductList(props) {
     setSelectedProduct(null);
   };
 
+  const onOpenModal = (item) => {
+    setModalData(item);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  if (isLoading) {
+    return <LoadingView />;
+  }
+
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       {products.length === 0 ? (
@@ -126,27 +145,39 @@ function ProductList(props) {
                 <TableRow>
                   <TableCell>
                     <TableSortLabel
-                      active={sortOrder.column === 'productId'}
-                      direction={sortOrder.column === 'productId' ? sortOrder.direction : 'asc'}
-                      onClick={() => handleRequestSort(null, 'productId')}
+                      active={sortOrder.column === "productId"}
+                      direction={
+                        sortOrder.column === "productId"
+                          ? sortOrder.direction
+                          : "asc"
+                      }
+                      onClick={() => handleRequestSort(null, "productId")}
                     >
                       ProductID
                     </TableSortLabel>
                   </TableCell>
                   <TableCell>
                     <TableSortLabel
-                      active={sortOrder.column === 'title'}
-                      direction={sortOrder.column === 'title' ? sortOrder.direction : 'asc'}
-                      onClick={() => handleRequestSort(null, 'title')}
+                      active={sortOrder.column === "title"}
+                      direction={
+                        sortOrder.column === "title"
+                          ? sortOrder.direction
+                          : "asc"
+                      }
+                      onClick={() => handleRequestSort(null, "title")}
                     >
                       Title
                     </TableSortLabel>
                   </TableCell>
                   <TableCell>
                     <TableSortLabel
-                      active={sortOrder.column === 'price'}
-                      direction={sortOrder.column === 'price' ? sortOrder.direction : 'asc'}
-                      onClick={() => handleRequestSort(null, 'price')}
+                      active={sortOrder.column === "price"}
+                      direction={
+                        sortOrder.column === "price"
+                          ? sortOrder.direction
+                          : "asc"
+                      }
+                      onClick={() => handleRequestSort(null, "price")}
                     >
                       Price
                     </TableSortLabel>
@@ -155,9 +186,13 @@ function ProductList(props) {
                   <TableCell>Status</TableCell>
                   <TableCell>
                     <TableSortLabel
-                      active={sortOrder.column === 'quantity'}
-                      direction={sortOrder.column === 'quantity' ? sortOrder.direction : 'asc'}
-                      onClick={() => handleRequestSort(null, 'quantity')}
+                      active={sortOrder.column === "quantity"}
+                      direction={
+                        sortOrder.column === "quantity"
+                          ? sortOrder.direction
+                          : "asc"
+                      }
+                      onClick={() => handleRequestSort(null, "quantity")}
                     >
                       Quantity
                     </TableSortLabel>
@@ -189,24 +224,33 @@ function ProductList(props) {
                       <TableCell>
                         {/* Action buttons */}
                         <TableCell>
-                        <Tooltip title="Edit">
-                          <IconButton
-                            color="primary"
-                            onClick={() => handleOpenUpdate(row)}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Delete">
-                          <IconButton
-                            aria-label="delete"
-                            color="error"
-                            onClick={() => handleOpenDelete(row._id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
+                          <Tooltip title="Preview">
+                            <IconButton
+                              color="primary"
+                              onClick={() => onOpenModal(row)}
+                            >
+                              <VisibilityIcon />
+                            </IconButton>
+                          </Tooltip>
+
+                          <Tooltip title="Edit">
+                            <IconButton
+                              color="primary"
+                              onClick={() => handleOpenUpdate(row)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Delete">
+                            <IconButton
+                              aria-label="delete"
+                              color="error"
+                              onClick={() => handleOpenDelete(row._id)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -227,6 +271,13 @@ function ProductList(props) {
           />
         </>
       )}
+      {openModal ? (
+        <PreviewPage
+          previewData={modalData}
+          openModal={openModal}
+          closeModal={closeModal}
+        />
+      ) : null}
       {/* Delete dialog and update modal */}
       <Dialog open={openDeleteDialog} onClose={handleCloseDelete}>
         <DialogTitle>Confirm Deletion</DialogTitle>
