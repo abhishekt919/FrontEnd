@@ -20,7 +20,8 @@ const schema = yup.object().shape({
         .typeError("Price must be a number"), // Handle number type validation
     description: yup
         .string()
-        .required("Enter your product description"),
+        .required("Enter your product description")
+        .min(5,"Product Description minimun 5 characters"),
     quantity: yup
         .number()
         .required("Enter your product quantity")
