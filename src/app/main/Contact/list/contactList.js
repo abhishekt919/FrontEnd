@@ -14,7 +14,11 @@ import {
   TextField,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { LoadingView, NoRecordsView,CustomActionMenu } from "app/shared-components/index";
+import {
+  LoadingView,
+  NoRecordsView,
+  CustomActionMenu,
+} from "app/shared-components/index";
 import { getContact } from "./../store/contactSlice";
 import { showMessage } from "app/store/fuse/messageSlice";
 import PreviewPage from "../preview";
@@ -112,9 +116,7 @@ function ContactList(props) {
                           position: "relative",
                           width: 50,
                           height: 50,
-                          "&:hover": {
-                            zIndex: 1, // Ensure the image is on top during hover
-                          },
+                          "&:hover": row.image ? { zIndex: 1 } : {}, // Apply zIndex only if image exists
                         }}
                       >
                         <Avatar
@@ -127,13 +129,17 @@ function ContactList(props) {
                           sx={{
                             width: 50,
                             height: 50,
-                            transition: "transform 0.9s ease", // Smooth transition effect
+                            transition: row.image
+                              ? "transform 0.9s ease"
+                              : "none", // Smooth transition only if image exists
                             position: "absolute",
                             top: 0,
                             left: 0,
-                            "&:hover": {
-                              transform: "scale(3)", // Double the size on hover
-                            },
+                            "&:hover": row.image
+                              ? {
+                                  transform: "scale(2)", // Double the size on hover
+                                }
+                              : {}, // No hover effect when image is unavailable
                           }}
                         />
                       </Box>
@@ -144,15 +150,17 @@ function ContactList(props) {
                     <TableCell>{row.email}</TableCell>
                     <TableCell>{row.phoneNumber}</TableCell>
                     <TableCell>
-                        <CustomActionMenu
-                          actions={[
-                            {
-                              iconName: "heroicons-outline:eye",
-                              name: "View Details",
-                              isVisible: true,
-                              onClick: () => onOpenModal(row),
-                            },]}/>
-                            </TableCell>
+                      <CustomActionMenu
+                        actions={[
+                          {
+                            iconName: "heroicons-outline:eye",
+                            name: "View Details",
+                            isVisible: true,
+                            onClick: () => onOpenModal(row),
+                          },
+                        ]}
+                      />
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>

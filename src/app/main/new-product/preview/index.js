@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import {
   Box,
   Button,
@@ -7,22 +6,10 @@ import {
   DialogContent,
   DialogTitle,
   Chip,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
   Typography,
-  lighten,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import moment from "moment";
-import { useTranslation } from "react-i18next";
-import RecordStatus from "app/theme-layouts/shared-components/RecordStatus";
 import { LoadingView } from "app/shared-components/index";
-import { DATETIME_FORMAT_MM_DD_YYYY } from "../../../configs/constants";
 
 export default function PreviewPage(props) {
   if (!props.previewData) {
@@ -132,6 +119,7 @@ export default function PreviewPage(props) {
                       ? "warning"
                       : "default"
                   }
+                  size="small"
                 />
               </Typography>
             </div>
