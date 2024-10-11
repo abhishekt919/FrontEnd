@@ -163,7 +163,7 @@ function ProductList(props) {
     // Dispatch the getCart action to update the cart state in Redux
     dispatch(getCart())
       .then((result) => {
-        console.log("Cart refreshed successfully:", result.payload.data);
+        console.log("Cart refreshed successfully:", result.payload.cart.items);
       })
       .catch((error) => {
         console.error("Failed to refresh cart:", error);
@@ -213,6 +213,7 @@ function ProductList(props) {
           showMessage({ message: response.data.message, variant: "success" })
         );
         refreshProducts();
+        refreshCart();
       } else {
         dispatch(
           showMessage({ message: response.data.message, variant: "error" })
