@@ -22,7 +22,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getStudent } from "./../store/studentSlice";
 import PreviewPage from "../preview";
-import { LoadingView, NoRecordsView, CustomActionMenu } from "app/shared-components/index";
+import {
+  LoadingView,
+  NoRecordsView,
+  CustomActionMenu,
+} from "app/shared-components/index";
 
 function StudentList(props) {
   const dispatch = useDispatch();
@@ -88,7 +92,8 @@ function StudentList(props) {
       .filter((student) => {
         if (!filterData.class) return true;
         return student.class === filterData.class.name; // Adjusting comparison to match selected class object
-      }).filter((student) => {
+      })
+      .filter((student) => {
         // Filter by search term
         return student.firstName.toLowerCase().includes(searchItem);
       })
@@ -184,14 +189,14 @@ function StudentList(props) {
           </Select>
         </FormControl>
         <FormControl sx={{ m: 2, minWidth: 120 }}>
-        <TextField
-          label="Search by First Name"
-          variant="outlined"
-          value={searchItem}
-          onChange={handleSearchChange}
-          fullWidth
-        />
-      </FormControl>
+          <TextField
+            label="Search by First Name"
+            variant="outlined"
+            value={searchItem}
+            onChange={handleSearchChange}
+            fullWidth
+          />
+        </FormControl>
         <Button
           variant="outlined"
           color="secondary"
@@ -206,7 +211,10 @@ function StudentList(props) {
         <NoRecordsView />
       ) : (
         <>
-          <TableContainer component={Paper} sx={{ maxHeight: 440, border: 1, borderColor: "divider" }}>
+          <TableContainer
+            component={Paper}
+            sx={{ maxHeight: 440, border: 1, borderColor: "divider" }}
+          >
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
@@ -242,7 +250,9 @@ function StudentList(props) {
                         <Typography variant="body2">{row.email}</Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2">{row.rollNumber}</Typography>
+                        <Typography variant="body2">
+                          {row.rollNumber}
+                        </Typography>
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2">{row.class}</Typography>
@@ -255,7 +265,7 @@ function StudentList(props) {
                               name: "View Details",
                               isVisible: true,
                               onClick: () => onOpenModal(row),
-                            }
+                            },
                           ]}
                         />
                       </TableCell>
@@ -267,18 +277,15 @@ function StudentList(props) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 15, 20]}
             component="div"
-            count={filteredStudents.length}
+            count={students.length}
             rowsPerPage={rowsPerPage}
             page={page}
-            onPageChange={(event, newPage) => setPage(newPage)}
-            onRowsPerPageChange={(event) => {
-              setRowsPerPage(parseInt(event.target.value, 10));
-              setPage(0);
-            }}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </>
       )}
-        {openModal ? (
+      {openModal ? (
         <PreviewPage
           previewData={modalData}
           openModal={openModal}
