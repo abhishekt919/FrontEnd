@@ -160,7 +160,6 @@ function ProductList(props) {
   };
 
   const refreshCart = () => {
-    // Dispatch the getCart action to update the cart state in Redux
     dispatch(getCart())
       .then((result) => {
         console.log("Cart refreshed successfully:", result.payload.cart.items);
