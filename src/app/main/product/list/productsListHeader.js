@@ -1,12 +1,12 @@
 import { Button, Typography } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getCart } from "./../store/cartSlice";
+import LoadingView from "app/shared-components/LoadingView";
 
 function ListHeader() {
   const theme = useTheme();
@@ -30,13 +30,17 @@ function ListHeader() {
       });
   }, [dispatch]);
 
+  if(isLoading) {
+    return <LoadingView/>
+  }
+
   return (
     <div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
       <Typography className="text-16 sm:text-20 truncate font-semibold">
         Products|
       </Typography>
       <Typography className="text-16 sm:text-20 truncate font-semibold">
-        <Button to="/cart" component={Link}>Items in cart</Button> : {cartItems.length} 
+        <Button to="/cart" component={Link}>Items in cart</Button> : {cartItems? cartItems.length:0} 
       </Typography>
       <div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8 no-print">
         <motion.div
