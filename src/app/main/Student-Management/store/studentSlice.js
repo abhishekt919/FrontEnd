@@ -10,29 +10,15 @@ export const getStudent = createAsyncThunk(
   }
 );
 
-// export const createStudent = createAsyncThunk(
-//   'studentModule/createStudent',
-//   async (inputJson, { dispatch, getState }) => {
-//     const response = await axios.post(`/student/add`, inputJson);
-//     const data = await response.data;
-//     return data;
-//   }
-// );
-
-export const createStudent = (inputData) => async (dispatch) => {
-  try {
-    const response = await axios.post('/student/add', inputData);
-    return dispatch({
-      type: 'CREATE_STUDENT_SUCCESS',
-      payload: response.data,
-    });
-  } catch (error) {
-    return dispatch({
-      type: 'CREATE_STUDENT_FAILURE',
-      payload: error.response.data,
-    });
+export const createStudent = createAsyncThunk(
+  'studentModule/createStudent',
+  async (inputJson, { dispatch, getState }) => {
+    const response = await axios.post(`/student/add`, inputJson);
+    const data = await response.data;
+    return data;
   }
-};
+);
+
 
 const studentSlice = createSlice({
   name: "studentModule",
