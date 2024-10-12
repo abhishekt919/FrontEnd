@@ -1,31 +1,32 @@
 import { Button, Typography } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getCart } from "./../store/cartSlice";
+import { getCart, selectCartData } from "./../store/cartSlice";
+
 function ListHeader() {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [cartItems, setCartItems] = useState([]);
+  const cartData = useSelector(selectCartData);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     dispatch(getCart())
-      .then((result) => {
-        setCartItems(result.payload.cart.items);
+      .then(() => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching cart:", error);
         setLoading(false);
       });
   }, [dispatch]);
+
+  console.log("cartData", cartData.cart.data);
+
   return (
     <div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
       <Typography className="text-16 sm:text-20 truncate font-semibold">
@@ -58,7 +59,7 @@ function ListHeader() {
               variant="caption"
               className="text-16 sm:text-20 truncate font-semibold"
             >
-              Cart Items | <Button>Items in cart</Button> : {cartItems?.length || 0}
+              Items in cart : {cartData?.cart?.data?.data?.items?.length}
             </Typography>
           </motion.div>
         </div>

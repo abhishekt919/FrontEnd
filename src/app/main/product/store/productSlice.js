@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const getProducts = createAsyncThunk(
   "productModule/getProducts",
-  async (limit) => {
+  async () => {
     const response = await axios.get(`/product/get`);
     const data = await response.data;
     return data;

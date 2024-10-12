@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { showMessage } from 'app/store/fuse/messageSlice';
+import { showMessage } from "app/store/fuse/messageSlice";
 import axios from "axios";
 import {
   CustomActionMenu,
@@ -23,7 +23,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getCart,removeItemFromCart } from "./../store/cartSlice";
+import { getCart, removeItemFromCart } from "./../store/cartSlice";
 
 function CartList(props) {
   const navigate = useNavigate();
@@ -33,12 +33,11 @@ function CartList(props) {
   const [isLoading, setLoading] = useState(true);
   const [cartItems, setCartItems] = useState([]);
 
-
   useEffect(() => {
     setLoading(true);
     dispatch(getCart())
       .then((result) => {
-        setCartItems(result.payload.cart.items);
+        setCartItems(result.payload.data.items);
         setLoading(false);
       })
       .catch((error) => {
@@ -47,7 +46,7 @@ function CartList(props) {
       });
   }, [dispatch]);
 
-  const handleRemove = async (item, increment) => {
+  const handleRemove = async (item) => {
     try {
       const response = await axios.delete(
         "http://localhost:4000/api/v1/cart/remove-item",
@@ -63,9 +62,9 @@ function CartList(props) {
         setCartItems((prevItems) =>
           prevItems.filter(
             (cartItem) => cartItem.productId._id !== item.productId._id
-          ),
+          )
         );
-        dispatch(showMessage({ message: response.data.message}));
+        dispatch(showMessage({ message: response.data.message }));
       } else {
         console.error("Failed to remove item:", response.data.message);
       }
@@ -96,7 +95,7 @@ function CartList(props) {
               : cartItem
           )
         );
-        dispatch(showMessage({ message: response.data.message}))
+        dispatch(showMessage({ message: response.data.message }));
       } else {
         console.error("Failed to update quantity:", response.data.message);
       }
@@ -105,11 +104,10 @@ function CartList(props) {
     }
   };
 
-
-  if (isLoading) return <LoadingView />; 
+  if (isLoading) return <LoadingView />;
 
   return (
-    <Paper sx={{ width: "100%"}}>
+    <Paper sx={{ width: "100%" }}>
       {cartItems?.length === 0 ? (
         <NoRecordsView />
       ) : (
@@ -117,8 +115,8 @@ function CartList(props) {
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
-                <TableRow >
-                <TableCell sx={{ width: "20%" }}>Name</TableCell>
+                <TableRow>
+                  <TableCell sx={{ width: "20%" }}>Name</TableCell>
                   <TableCell sx={{ width: "20%" }}>Title</TableCell>
                   <TableCell sx={{ width: "20%" }}>Description</TableCell>
                   <TableCell sx={{ width: "20%" }}>Price</TableCell>
@@ -145,36 +143,35 @@ function CartList(props) {
                         </TableCell>
                         <TableCell>
                           <Tooltip title="Decrease">
-                          <Button
-                            color="info"
-                            variant="outlined"
-                            onClick={() => handleQuantityChange(row, -1)}
-                            disabled={row.quantity === 1}
-                            size="small"
-                          >
-                            -
-                          </Button></Tooltip>{" "}
-                          {row.quantity}
-                          {" "}
-                         <Tooltip title="Increase">
-                         <Button
-                            color="info"
-                            variant="outlined"
-                            onClick={() => handleQuantityChange(row, 1)}
-                            size="small"
-                          >
-                            +
-                          </Button>
-                         </Tooltip>
-
+                            <Button
+                              color="info"
+                              variant="outlined"
+                              onClick={() => handleQuantityChange(row, -1)}
+                              disabled={row.quantity === 1}
+                              size="small"
+                            >
+                              -
+                            </Button>
+                          </Tooltip>{" "}
+                          {row.quantity}{" "}
+                          <Tooltip title="Increase">
+                            <Button
+                              color="info"
+                              variant="outlined"
+                              onClick={() => handleQuantityChange(row, 1)}
+                              size="small"
+                            >
+                              +
+                            </Button>
+                          </Tooltip>
                           <Tooltip title="Remove">
-                          <IconButton
-                            aria-label="delete"
-                            color="error"
-                            onClick={() => handleRemove(row, -row.quantity)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
+                            <IconButton
+                              aria-label="delete"
+                              color="error"
+                              onClick={() => handleRemove(row)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
                           </Tooltip>
                         </TableCell>
                       </TableRow>
