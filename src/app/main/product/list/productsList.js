@@ -29,7 +29,7 @@ import { getCart } from "./../store/cartSlice";
 import { showMessage } from "app/store/fuse/messageSlice";
 import PreviewPage from "../preview";
 
-function ProductList(props) {
+function ProductList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
@@ -44,7 +44,7 @@ function ProductList(props) {
 
   useEffect(() => {
     setLoading(true);
-    dispatch(getProducts({ limit: rowsPerPage }))
+    dispatch(getProducts())
       .then((result) => {
         setProducts(result.payload.data);
         setLoading(false);
@@ -56,7 +56,7 @@ function ProductList(props) {
         );
         console.error("Error fetching products:", error);
       });
-  }, [rowsPerPage, dispatch]);
+  }, [dispatch]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -161,11 +161,9 @@ function ProductList(props) {
 
   const refreshCart = () => {
     dispatch(getCart())
-      .then((result) => {
-        console.log("Cart refreshed successfully:", result.payload.cart.items);
+      .then(() => {
       })
       .catch((error) => {
-        console.error("Failed to refresh cart:", error);
         dispatch(
           showMessage({
             message: "Failed to refresh cart data",
@@ -203,7 +201,7 @@ function ProductList(props) {
         `http://localhost:4000/api/v1/cart/add`,
         {
           productId: product._id,
-          quantity: 1, // You can change the quantity based on user input or other logic
+          quantity: 1,
         }
       );
 
