@@ -16,17 +16,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { showMessage } from "app/store/fuse/messageSlice";
 import axios from "axios";
 import {
-  CustomActionMenu,
   LoadingView,
   NoRecordsView,
 } from "app/shared-components/index";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getCart, removeItemFromCart } from "./../store/cartSlice";
+import { getCart } from "./../store/cartSlice";
 
 function CartList(props) {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
