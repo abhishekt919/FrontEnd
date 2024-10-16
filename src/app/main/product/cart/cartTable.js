@@ -20,28 +20,37 @@ import {
   NoRecordsView,
 } from "app/shared-components/index";
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getCart } from "./../store/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { userSession } from "app/store/userSlice";
+import { getCart, selectCartData } from "./../store/cartSlice";
 
 function CartList(props) {
   const dispatch = useDispatch();
+  const signInUser = useSelector(userSession);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const cartData = useSelector(selectCartData);
 
   useEffect(() => {
-    setLoading(true);
-    dispatch(getCart())
-      .then((result) => {
-        setCartItems(result.payload.data.items);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching cart:", error);
-        setLoading(false);
-      });
-  }, [dispatch]);
+    if (signInUser?._id) {
+      setLoading(true);
+      dispatch(getCart(signInUser._id))
+        .then((result) => {
+          setCartItems(result.payload.data.items);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching cart:", error);
+          console.log("Id", signInUser)
+          setLoading(false);
+        });
+    }
+  }, [dispatch, signInUser?._id]);
+
+  console.log("cartData", cartData.cart.data);
+  console.log("Items", signInUser)
 
   const handleRemove = async (item) => {
     try {
@@ -51,6 +60,7 @@ function CartList(props) {
           data: {
             productId: item.productId._id,
             quantity: 0,
+            userId: signInUser._id
           },
         }
       );
@@ -81,6 +91,7 @@ function CartList(props) {
         {
           productId: item.productId._id,
           quantity: newQuantity,
+          userId: signInUser._id
         }
       );
 
@@ -105,7 +116,7 @@ function CartList(props) {
 
   return (
     <Paper sx={{ width: "100%" }}>
-      {cartItems?.length === 0 ? (
+      {cartData.cart.data?.length === 0 ? (
         <NoRecordsView />
       ) : (
         <>

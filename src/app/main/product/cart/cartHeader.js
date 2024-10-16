@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { LoadingView } from "app/shared-components/index";
 import { getCart, selectCartData } from "./../store/cartSlice";
 
 function ListHeader() {
@@ -26,6 +26,10 @@ function ListHeader() {
   }, [dispatch]);
 
   console.log("cartData", cartData.cart.data);
+
+  if (isLoading) {
+    return <LoadingView />;
+  }
 
   return (
     <div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
@@ -65,7 +69,7 @@ function ListHeader() {
         </div>
       </Typography>
 
-      <div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8 no-print">
+      {/* <div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8 no-print">
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
@@ -81,7 +85,7 @@ function ListHeader() {
             Add Product
           </Button>
         </motion.div>
-      </div>
+      </div> */}
     </div>
   );
 }
