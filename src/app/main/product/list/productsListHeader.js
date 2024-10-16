@@ -8,9 +8,6 @@ import { selectCartData } from "./../store/cartSlice";
 function ListHeader() {
   const cartData = useSelector(selectCartData);
 
-  console.log("cartData", cartData);
-
-  
   return (
     <div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
       <Typography className="text-16 sm:text-20 truncate font-semibold">
