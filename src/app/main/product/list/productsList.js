@@ -17,8 +17,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CustomActionMenu,
   LoadingView,
@@ -27,11 +26,12 @@ import {
 import { getProducts } from "./../store/productSlice";
 import { getCart } from "./../store/cartSlice";
 import { showMessage } from "app/store/fuse/messageSlice";
+import { userSession } from "app/store/userSlice";
 import PreviewPage from "../preview";
 
 function ProductList() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const signInUser = useSelector(userSession);
   const [page, setPage] = useState(0);
   const [products, setProducts] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -161,8 +161,7 @@ function ProductList() {
 
   const refreshCart = () => {
     dispatch(getCart())
-      .then(() => {
-      })
+      .then(() => {})
       .catch((error) => {
         dispatch(
           showMessage({
@@ -172,7 +171,6 @@ function ProductList() {
         );
       });
   };
-  
 
   // Combined filtering and sorting function
   const getFilteredProducts = () => {
@@ -195,6 +193,7 @@ function ProductList() {
         return 0;
       });
   };
+
   const addToCart = async (product) => {
     try {
       const response = await axios.post(
@@ -202,6 +201,7 @@ function ProductList() {
         {
           productId: product._id,
           quantity: 1,
+          userId: signInUser._id,
         }
       );
 
@@ -228,7 +228,6 @@ function ProductList() {
   };
 
   const filteredProducts = getFilteredProducts();
-
 
   if (isLoading) return <LoadingView />;
 
@@ -358,7 +357,7 @@ function ProductList() {
           />
         </>
       )}
-           {openModal ? (
+      {openModal ? (
         <PreviewPage
           previewData={modalData}
           openModal={openModal}
