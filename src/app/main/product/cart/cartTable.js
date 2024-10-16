@@ -15,10 +15,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { showMessage } from "app/store/fuse/messageSlice";
 import axios from "axios";
-import {
-  LoadingView,
-  NoRecordsView,
-} from "app/shared-components/index";
+import { LoadingView, NoRecordsView } from "app/shared-components/index";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userSession } from "app/store/userSlice";
@@ -43,14 +40,24 @@ function CartList(props) {
         })
         .catch((error) => {
           console.error("Error fetching cart:", error);
-          console.log("Id", signInUser)
+          console.log("Id", signInUser);
           setLoading(false);
         });
     }
   }, [dispatch, signInUser?._id]);
 
-  console.log("cartData", cartData.cart.data);
-  console.log("Items", signInUser)
+  const refreshCart = () => {
+    dispatch(getCart())
+      .then(() => {})
+      .catch((error) => {
+        dispatch(
+          showMessage({
+            message: "Failed to refresh cart data",
+            variant: "error",
+          })
+        );
+      });
+  };
 
   const handleRemove = async (item) => {
     try {
@@ -60,7 +67,7 @@ function CartList(props) {
           data: {
             productId: item.productId._id,
             quantity: 0,
-            userId: signInUser._id
+            userId: signInUser._id,
           },
         }
       );
@@ -71,6 +78,7 @@ function CartList(props) {
             (cartItem) => cartItem.productId._id !== item.productId._id
           )
         );
+        refreshCart();
         dispatch(showMessage({ message: response.data.message }));
       } else {
         console.error("Failed to remove item:", response.data.message);
@@ -91,7 +99,7 @@ function CartList(props) {
         {
           productId: item.productId._id,
           quantity: newQuantity,
-          userId: signInUser._id
+          userId: signInUser._id,
         }
       );
 
@@ -116,7 +124,7 @@ function CartList(props) {
 
   return (
     <Paper sx={{ width: "100%" }}>
-      {cartData.cart.data?.length === 0 ? (
+      {cartItems.length === 0 ? (
         <NoRecordsView />
       ) : (
         <>
