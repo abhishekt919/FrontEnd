@@ -30,17 +30,17 @@ function UserPermissions() {
   const [noRecord, setNoRecord] = useState(false);
   const [hasPageAccess, setHasPageAccess] = useState(null);
 
-  useEffect(() => {
-    if (!Cookies.get("_SuperMyMachineOnline")) {
-      const updateAccess = hasModuleAccess(
-        USER_PERMISSIONS_CODES.USERS,
-        ACCESS_PERMISSIONS.UPDATE
-      );
-      setHasPageAccess(updateAccess);
-    } else  {
-      setHasPageAccess(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!Cookies.get("_SuperMyMachineOnline")) {
+  //     const updateAccess = hasModuleAccess(
+  //       USER_PERMISSIONS_CODES.USERS,
+  //       ACCESS_PERMISSIONS.UPDATE
+  //     );
+  //     setHasPageAccess(updateAccess);
+  //   } else  {
+  //     setHasPageAccess(true);
+  //   }
+  // }, []);
 
   useDeepCompareEffect(() => {
     function updatePageState() {
@@ -64,7 +64,7 @@ function UserPermissions() {
   /**
    * Show Message if the page has not access
    */
-  if (!hasPageAccess) return <NoAccessPage />;
+  // if (!hasPageAccess) return <NoAccessPage />;
 
   /**
    * Show Message if the requested Record does not exists

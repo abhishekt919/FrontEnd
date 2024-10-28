@@ -21,24 +21,24 @@ function UsersList() {
   const signInUser = useSelector(userSession);
   const [hasPageAccess, setHasPageAccess] = useState(null);
 
-  useEffect(() => {
-    if (Cookies.get("_SuperMyMachineOnline")) {
-      setHasPageAccess(true);
-    } else {
-      if (signInUser) {
-        const hasPermission = hasModuleAccess(
-          USER_PERMISSIONS_CODES.USERS,
-          ACCESS_PERMISSIONS.VIEW
-        )
-        setHasPageAccess(hasPermission);
-      }
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (Cookies.get("_SuperMyMachineOnline")) {
+  //     setHasPageAccess(true);
+  //   } else {
+  //     if (signInUser) {
+  //       const hasPermission = hasModuleAccess(
+  //         USER_PERMISSIONS_CODES.USERS,
+  //         ACCESS_PERMISSIONS.VIEW
+  //       )
+  //       setHasPageAccess(hasPermission);
+  //     }
+  //   }
+  // }, [dispatch]);
 
   /**
  * Show Message if the page has not access
  */
-  if (!hasPageAccess) return <NoAccessPage />;
+  //if (!hasPageAccess) return <NoAccessPage />;
 
   return (
     <FusePageCarded
