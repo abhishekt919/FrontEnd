@@ -18,6 +18,7 @@ import GameConfig from '../main/Game/config';
 import StudentConfig from '../main/Student-Management/config';
 import ContactConfig from '../main/Contact/ContactConfig';
 import NewProductConfig from '../main/new-product/config';
+import TrafficLightConfig from '../main/TrafficLights/config';
 
 const routeConfig = [
   ...AuthPagesConfig,
@@ -33,7 +34,8 @@ const routeConfig = [
   GameConfig,
   StudentConfig,
   ContactConfig,
-  NewProductConfig
+  NewProductConfig,
+  TrafficLightConfig
 ];
 
 const routes = [
