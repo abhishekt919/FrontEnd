@@ -20,10 +20,10 @@ import { DATE_FORMAT_DD_MMM_YYYY, TIME_FORMAT_HH_MM_a } from '../../../configs/c
 import { CustomActionMenu, CustomTooltip } from 'app/shared-components/index';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { hasModuleAccess } from "src/app/utils/helperFunctions";
-import {
-  ACCESS_PERMISSIONS,
-  USER_PERMISSIONS_CODES
-} from "../../../configs/constants";
+// import {
+//   ACCESS_PERMISSIONS,
+//   USER_PERMISSIONS_CODES
+// } from "../../../configs/constants";
 
 function TableListing(props) {
   const dispatch = useDispatch();
@@ -235,7 +235,7 @@ function TableListing(props) {
                                 {
                                   name: t('CLICK_TO_VIEW'),
                                   iconName: "heroicons-outline:eye",
-                                  isVisible: hasModuleAccess(USER_PERMISSIONS_CODES.USERS, ACCESS_PERMISSIONS.VIEW),
+                                  isVisible: true,
                                   onClick: () => {
                                     onOpenModal(n);
                                   }
@@ -243,7 +243,7 @@ function TableListing(props) {
                                 {
                                   name: t('CLICK_TO_EDIT'),
                                   iconName: "heroicons-outline:pencil-alt",
-                                  isVisible: (n?.role != 'director' && hasModuleAccess(USER_PERMISSIONS_CODES.USERS, ACCESS_PERMISSIONS.UPDATE)),
+                                  isVisible:true,
                                   onClick: () => {
                                     handleEdit(n);
                                   }
@@ -251,7 +251,7 @@ function TableListing(props) {
                                 {
                                   name: t('EDIT_PERMISSIONS'),
                                   iconName: "material-outline:security",
-                                  isVisible: (n?.role !== 'director' && signInUser?._id !== n?._id && hasModuleAccess(USER_PERMISSIONS_CODES.USERS, ACCESS_PERMISSIONS.UPDATE)),
+                                  isVisible: true,
                                   onClick: () => {
                                     handlePermissionClick(n);
                                   }
@@ -260,7 +260,7 @@ function TableListing(props) {
                             />
                         }
                       </TableCell>
-                      <TableCell className="pl-8 py-0 md:pl-8 no-print" component="th" scope="row">
+                      {/* <TableCell className="pl-8 py-0 md:pl-8 no-print" component="th" scope="row">
                         {Cookies.get("_SuperMyMachineOnline") && signInUser?._id !== n?._id ?
                           <CustomTooltip title={t('LOGIN_AS') + ' ' + n.firstName + " " + n.lastName}>
                             <IconButton
@@ -288,7 +288,7 @@ function TableListing(props) {
                             )}
                           </>
                         }
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}

@@ -28,7 +28,6 @@ function CartList(props) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isLoading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  const cartData = useSelector(selectCartData);
 
   useEffect(() => {
     if (signInUser?._id) {
