@@ -74,6 +74,13 @@ const navigationConfig = [
     url: 'new-product',
   },
   {
+    id: 'traffic-light',
+    title: 'Traffic Light',
+    type: 'item',
+    icon: 'material-outline:people',
+    url: 'traffic-light',
+  },
+  {
     id: 'settings',
     title: 'Settings',
     translate: 'SETTINGS',
