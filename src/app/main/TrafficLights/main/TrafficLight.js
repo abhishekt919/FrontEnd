@@ -44,19 +44,19 @@ const TrafficLight = () => {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", justifyItems: "center" }}>
         <div>
           <p>North</p>
-          <Light color={lights.north || "grey"} />
+          <Light color={lights.north || "green"} />
         </div>
         <div>
           <p>South</p>
-          <Light color={lights.south || "grey"} />
+          <Light color={lights.south || "green"} />
         </div>
         <div>
           <p>East</p>
-          <Light color={lights.east || "grey"} />
+          <Light color={lights.east || "green"} />
         </div>
         <div>
           <p>West</p>
-          <Light color={lights.west || "grey"} />
+          <Light color={lights.west || "green"} />
         </div>
       </div>
     </div>
