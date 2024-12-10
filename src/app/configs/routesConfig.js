@@ -19,6 +19,7 @@ import StudentConfig from '../main/Student-Management/config';
 import ContactConfig from '../main/Contact/ContactConfig';
 import NewProductConfig from '../main/new-product/config';
 import TrafficLightConfig from '../main/TrafficLights/config';
+import EventConfig from '../main/event-booking/eventConfig';
 
 const routeConfig = [
   ...AuthPagesConfig,
@@ -35,7 +36,8 @@ const routeConfig = [
   StudentConfig,
   ContactConfig,
   NewProductConfig,
-  TrafficLightConfig
+  TrafficLightConfig,
+  EventConfig
 ];
 
 const routes = [
