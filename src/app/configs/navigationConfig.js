@@ -60,6 +60,13 @@ const navigationConfig = [
     url: 'game',
   },
   {
+    id: 'event',
+    title: 'Event',
+    type: 'item',
+    icon: 'heroicons-outline:office-building',
+    url: 'event',
+  },
+  {
     id: 'contact',
     title: 'Contact',
     type: 'item',
