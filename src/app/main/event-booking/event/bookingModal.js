@@ -12,7 +12,7 @@ const BookingModal = ({ isOpen, onClose, eventId, userId, onSuccess }) => {
           eventId,
           seats,
         });
-        onSuccess(); // Notify parent of successful booking
+        onSuccess();
       } catch (err) {
         setError(err.response?.data?.message || "Error booking seats.");
       }
