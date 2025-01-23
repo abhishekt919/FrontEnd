@@ -1,24 +1,22 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { bookEvents } from "../store/eventSlice";
+import { showMessage } from "app/store/fuse/messageSlice";
 
 const BookingModal = ({ isOpen, onClose, eventId, userId, onSuccess }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [seats, setSeats] = useState(1);
   const [error, setError] = useState(null);
 
   const handleBookingSubmit = async () => {
     try {
-      await axios.post("http://localhost:4000/api/v1/booking", {
-        userId,
-        eventId,
-        seats,
-      });
-      onSuccess(); // Trigger success callback
-    } catch (err) {
-      setError(err.response?.data?.message || "An error occurred.");
+      const inputJson = { userId, eventId, seats };
+      await dispatch(bookEvents(inputJson)).unwrap();
+      dispatch(showMessage({message:'Event booked successfully'}));
+      onSuccess();
+      onClose();
+    } catch (error) {
+      setError(error.message || "Failed to book the ticket.");
     }
   };
 
