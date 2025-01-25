@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { bookEvents } from "../store/eventSlice";
 import { showMessage } from "app/store/fuse/messageSlice";
 
-const BookingModal = ({ isOpen, onClose, eventId, userId, onSuccess }) => {
+const BookingModal = ({ isOpen, onClose, eventId, userId, availableSeats, onSuccess }) => {
   const dispatch = useDispatch();
   const [seats, setSeats] = useState(1);
   const [error, setError] = useState(null);
@@ -12,7 +12,7 @@ const BookingModal = ({ isOpen, onClose, eventId, userId, onSuccess }) => {
     try {
       const inputJson = { userId, eventId, seats };
       await dispatch(bookEvents(inputJson)).unwrap();
-      dispatch(showMessage({message:'Event booked successfully'}));
+      dispatch(showMessage({ message: "Event booked successfully" }));
       onSuccess();
       onClose();
     } catch (error) {
@@ -37,8 +37,12 @@ const BookingModal = ({ isOpen, onClose, eventId, userId, onSuccess }) => {
             onChange={(e) => setSeats(Number(e.target.value))}
             className="border border-gray-300 rounded-lg px-3 py-2 w-full"
             min="1"
+            max={availableSeats}
             placeholder="Enter number of seats"
           />
+          <p className="text-sm text-gray-500 mt-1">
+            Available seats: {availableSeats}
+          </p>
         </div>
         <div className="flex justify-end space-x-2">
           <button
@@ -50,6 +54,7 @@ const BookingModal = ({ isOpen, onClose, eventId, userId, onSuccess }) => {
           <button
             onClick={handleBookingSubmit}
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+            disabled={seats > availableSeats || seats < 1}
           >
             Confirm Booking
           </button>
