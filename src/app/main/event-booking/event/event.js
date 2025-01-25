@@ -10,7 +10,7 @@ const EventListingTable = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedEventId, setSelectedEventId] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null); // Store the full event object
 
   useEffect(() => {
     setLoading(true);
@@ -25,8 +25,8 @@ const EventListingTable = () => {
       });
   }, [dispatch]);
 
-  const handleBookTicket = (eventId) => {
-    setSelectedEventId(eventId);
+  const handleBookTicket = (event) => {
+    setSelectedEvent(event);
     setModalOpen(true);
   };
 
@@ -52,9 +52,15 @@ const EventListingTable = () => {
             <thead>
               <tr className="bg-gray-100 text-left text-gray-700">
                 <th className="px-4 py-2 border border-gray-300">Title</th>
-                <th className="px-4 py-2 border border-gray-300">Date & Time</th>
-                <th className="px-4 py-2 border border-gray-300">Total Seats</th>
-                <th className="px-4 py-2 border border-gray-300">Available Seats</th>
+                <th className="px-4 py-2 border border-gray-300">
+                  Date & Time
+                </th>
+                <th className="px-4 py-2 border border-gray-300">
+                  Total Seats
+                </th>
+                <th className="px-4 py-2 border border-gray-300">
+                  Available Seats
+                </th>
                 <th className="px-4 py-2 border border-gray-300">Price</th>
                 <th className="px-4 py-2 border border-gray-300">Venue</th>
                 <th className="px-4 py-2 border border-gray-300 text-center">
@@ -70,21 +76,37 @@ const EventListingTable = () => {
                     index % 2 === 0 ? "bg-gray-50" : "bg-white"
                   } hover:bg-gray-100 transition`}
                 >
-                  <td className="px-4 py-2 border border-gray-300">{event.title}</td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {event.title}
+                  </td>
                   <td className="px-4 py-2 border border-gray-300">
                     {new Date(event.date).toLocaleDateString()} | {event.time}
                   </td>
-                  <td className="px-4 py-2 border border-gray-300">{event.totalSeats}</td>
-                  <td className="px-4 py-2 border border-gray-300">{event.availableSeats}</td>
-                  <td className="px-4 py-2 border border-gray-300">{event.price}</td>
-                  <td className="px-4 py-2 border border-gray-300">{event.venue}</td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {event.totalSeats}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {event.availableSeats}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {event.price}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {event.venue}
+                  </td>
                   <td className="px-4 py-2 border border-gray-300 text-center">
-                    <button
-                      onClick={() => handleBookTicket(event._id)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-                    >
-                      Book Ticket
-                    </button>
+                    <td className="px-4 py-2 border border-gray-300 text-center">
+                      {event.availableSeats > 0 ? (
+                        <button
+                          onClick={() => handleBookTicket(event)}
+                          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                        >
+                          Book Ticket
+                        </button>
+                      ) : (
+                        <span className="text-gray-500">Sold Out</span>
+                      )}
+                    </td>
                   </td>
                 </tr>
               ))}
@@ -94,16 +116,18 @@ const EventListingTable = () => {
       ) : (
         <p className="text-center text-lg">No events available.</p>
       )}
-      <BookingModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        eventId={selectedEventId}
-        userId={signInUser}
-        onSuccess={handleBookingSuccess} // Handle booking success
-      />
+      {selectedEvent && (
+        <BookingModal
+          isOpen={isModalOpen}
+          onClose={() => setModalOpen(false)}
+          eventId={selectedEvent._id}
+          userId={signInUser}
+          availableSeats={selectedEvent.availableSeats} // Pass available seats
+          onSuccess={handleBookingSuccess} // Handle booking success
+        />
+      )}
     </div>
   );
 };
-
 
 export default EventListingTable;
