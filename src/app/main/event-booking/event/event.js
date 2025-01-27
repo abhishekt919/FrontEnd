@@ -45,7 +45,6 @@ const EventListingTable = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center">Event Listing</h1>
       {events.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto w-full border-collapse border border-gray-200 shadow-lg rounded-lg">
