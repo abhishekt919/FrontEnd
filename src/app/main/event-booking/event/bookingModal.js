@@ -3,7 +3,14 @@ import { useDispatch } from "react-redux";
 import { bookEvents } from "../store/eventSlice";
 import { showMessage } from "app/store/fuse/messageSlice";
 
-const BookingModal = ({ isOpen, onClose, eventId, userId, availableSeats, onSuccess }) => {
+const BookingModal = ({
+  isOpen,
+  onClose,
+  eventId,
+  userId,
+  availableSeats,
+  onSuccess,
+}) => {
   const dispatch = useDispatch();
   const [seats, setSeats] = useState(1);
   const [error, setError] = useState(null);
@@ -53,7 +60,11 @@ const BookingModal = ({ isOpen, onClose, eventId, userId, availableSeats, onSucc
           </button>
           <button
             onClick={handleBookingSubmit}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+            className={`px-4 py-2 rounded-lg transition ${
+              seats > availableSeats || seats < 1
+                ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
             disabled={seats > availableSeats || seats < 1}
           >
             Confirm Booking
