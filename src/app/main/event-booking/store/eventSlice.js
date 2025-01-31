@@ -10,6 +10,25 @@ export const getEvents = createAsyncThunk(
   }
 );
 
+export const getBookedEventsByUser = createAsyncThunk(
+  "EventModule/getBookedEventsByUser",
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const state = getState();
+      const userId = state.signInUser._id;
+      if (!userId) throw new Error("User ID is missing");
+
+      const response = await axios.get(`/booking/${userId}`);
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching booked events:", error);
+      return rejectWithValue(error.response?.data || "Error fetching booked events");
+    }
+  }
+);
+
+
 export const createEvents = createAsyncThunk(
   "EventModule/createEvents",
   async (inputJson) => {
