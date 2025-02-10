@@ -20,6 +20,7 @@ import ContactConfig from '../main/Contact/ContactConfig';
 import NewProductConfig from '../main/new-product/config';
 import TrafficLightConfig from '../main/TrafficLights/config';
 import EventConfig from '../main/event-booking/eventConfig';
+import CustomerConfig from '../main/customer/CustomerConfig';
 
 const routeConfig = [
   ...AuthPagesConfig,
@@ -37,7 +38,8 @@ const routeConfig = [
   ContactConfig,
   NewProductConfig,
   TrafficLightConfig,
-  EventConfig
+  EventConfig,
+  CustomerConfig
 ];
 
 const routes = [

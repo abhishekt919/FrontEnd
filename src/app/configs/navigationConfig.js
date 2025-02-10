@@ -87,6 +87,14 @@ const navigationConfig = [
     icon: 'material-outline:people',
     url: 'traffic-light',
   },
+
+  {
+    id: 'customer',
+    title: 'Customer',
+    type: 'item',
+    icon: 'material-outline:people',
+    url: 'customer',
+  },
   {
     id: 'settings',
     title: 'Settings',
