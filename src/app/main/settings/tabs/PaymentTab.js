@@ -26,7 +26,6 @@ const PaymentTab = (props) => {
 
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [canEdit, setCanEdit] = useState(false);
 
   useEffect(() => {
     let inputJson = {
@@ -40,16 +39,6 @@ const PaymentTab = (props) => {
         dispatch(showMessage({ message: result.payload.message, variant: 'error' }));
       }
     });
-
-    if (!Cookies.get("_SuperMyMachineOnline")) {
-      if (!hasModuleAccess(USER_PERMISSIONS_CODES.PAYMENT, ACCESS_PERMISSIONS.CREATE) && !hasModuleAccess(USER_PERMISSIONS_CODES.PAYMENT, ACCESS_PERMISSIONS.UPDATE)) {
-        setCanEdit(false);
-      } else {
-        setCanEdit(true);
-      }
-    } else {
-      setCanEdit(true);
-    }
   }, [dispatch]);
 
   const openAddCardModal = () => {
@@ -130,18 +119,16 @@ const PaymentTab = (props) => {
           <div className="border-x-0 border-t-0 border-solid border-1 p-10">
             <Typography component={"span"} className="text-16 sm:text-20 truncate font-semibold">
               {t("SAVED_CREDIT_CARD")}
-              {canEdit && (
-                <Button
-                  onClick={openAddCardModal}
-                  variant="outlined"
-                  color="secondary"
-                  size="small"
-                  className="ml-10"
-                  startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
-                >
-                  {t("ADD_CREDIT_CARD")}
-                </Button>
-              )}
+              <Button
+                onClick={openAddCardModal}
+                variant="outlined"
+                color="secondary"
+                size="small"
+                className="ml-10"
+                startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
+              >
+                {t("ADD_CREDIT_CARD")}
+              </Button>
             </Typography>
           </div>
           <div>
@@ -163,13 +150,11 @@ const PaymentTab = (props) => {
                     }
                   />
                   <ListItemSecondaryAction>
-                    {canEdit && (
-                      <CustomTooltip title="Delete">
+                  <CustomTooltip title="Delete">
                         <IconButton aria-label="delete" size="medium" onClick={() => deletecard(item)}>
                           <FuseSvgIcon color="error">feather:trash</FuseSvgIcon>
                         </IconButton>
                       </CustomTooltip>
-                    )}
                   </ListItemSecondaryAction>
                 </ListItem>
               ))}

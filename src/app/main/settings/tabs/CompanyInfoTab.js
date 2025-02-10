@@ -58,7 +58,6 @@ function CompanyInfoTab(props) {
   const company = useSelector(selectCompany);
   const { t } = useTranslation('Translation');
   const [formEdit, setFormEdit] = useState(false);
-  const [canEdit, setCanEdit] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const countries = useSelector(selectCountries);
@@ -71,15 +70,6 @@ function CompanyInfoTab(props) {
 
   useEffect(() => {
     dispatch(getCountries());
-    if (!Cookies.get("_SuperMyMachineOnline")) {
-      if (!hasModuleAccess(USER_PERMISSIONS_CODES.SETTINGS, ACCESS_PERMISSIONS.CREATE) && !hasModuleAccess(USER_PERMISSIONS_CODES.SETTINGS, ACCESS_PERMISSIONS.UPDATE)) {
-        setCanEdit(false);
-      } else {
-        setCanEdit(true);
-      }
-    } else {
-      setCanEdit(true);
-    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -173,7 +163,7 @@ function CompanyInfoTab(props) {
     <div>
       <Grid container spacing={2}>
         <Grid item xs={12} className="flex justify-end">
-          {canEdit && !formEdit && (
+          {!formEdit && (
             <Button
               onClick={() => setFormEdit(true)}
               variant="outlined"
@@ -600,7 +590,7 @@ function CompanyInfoTab(props) {
           />
         </Grid>
       </Grid>
-      {canEdit && formEdit && (
+      {formEdit && (
         <Grid container spacing={2} className="mt-10">
           <Grid item xs={12}>
             <Button

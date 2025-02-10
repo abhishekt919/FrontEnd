@@ -7,17 +7,10 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import Cookies from 'js-cookie';
-import { NoRecordsView } from "app/shared-components/index";
 import CompanyInfoTab from './tabs/CompanyInfoTab';
 import PaymentTab from './tabs/PaymentTab';
 import { userSession } from 'app/store/userSlice';
 import { getCompany } from 'app/store/companySlice';
-import { hasModuleAccess } from "src/app/utils/helperFunctions";
-import {
-  ACCESS_PERMISSIONS,
-  USER_PERMISSIONS_CODES
-} from "app/configs/constants";
 
 function SettingsPage() {
   const dispatch = useDispatch();
@@ -26,35 +19,15 @@ function SettingsPage() {
   const { state } = useLocation();
   const { t } = useTranslation('Translation');
   const [tabValue, setTabValue] = useState(state?.selectedTabValue ? state.selectedTabValue : 0);
-  const [isLoading, setLoading] = useState(false);
-  const [settingsView, setSettingsView] = useState(true);
-  const [paymentView, setPaymentView] = useState(true);
-  const [hasPageAccess, setHasPageAccess] = useState(null);
 
   useEffect(() => {
     dispatch(getCompany(signInUser.company));
-    if (!Cookies.get("_SuperMyMachineOnline")) {
-      const hasSettingsPermission = hasModuleAccess(
-        USER_PERMISSIONS_CODES.SETTINGS,
-        ACCESS_PERMISSIONS.VIEW
-      )
-      setSettingsView(hasSettingsPermission);
-      const hasPermission = hasModuleAccess(
-        USER_PERMISSIONS_CODES.PAYMENT,
-        ACCESS_PERMISSIONS.VIEW
-      )
-      setPaymentView(hasPermission);
-    }
   }, [dispatch]);
   /**
    * Tab Change
    */
   function handleTabChange(event, value) {
     setTabValue(value);
-  }
-
-  if (isLoading) {
-    return <FuseLoading />;
   }
 
   return (
@@ -72,28 +45,24 @@ function SettingsPage() {
           </Typography>
         </div>
       }
-      content={settingsView && paymentView ?
-        <NoRecordsView message={t('NO_ACCESS')} />
-        :
-        <>
-          <Tabs
-            value={tabValue}
-            onChange={handleTabChange}
-            indicatorColor="secondary"
-            textColor="secondary"
-            variant="scrollable"
-            scrollButtons="auto"
-            classes={{ root: 'w-full h-64 border-b-1' }}>
+      content={<>
+        <Tabs
+          value={tabValue}
+          onChange={handleTabChange}
+          indicatorColor="secondary"
+          textColor="secondary"
+          variant="scrollable"
+          scrollButtons="auto"
+          classes={{ root: 'w-full h-64 border-b-1' }}>
 
-            {settingsView && (<Tab className="h-64" label={t('COMPANY_DETAILS')} />)}
-            {paymentView && (<Tab className="h-64" label={t('PAYMENT_DETAILS')} />)}
-          </Tabs>
-          <div className="p-16 sm:p-24">
-            {(tabValue === 0 && settingsView) && (<CompanyInfoTab />)}
-            {((tabValue === 1 && paymentView) || !settingsView) && (<PaymentTab />)}
-          </div>
-        </>
-      }
+          <Tab className="h-64" label={t('COMPANY_DETAILS')} />
+          <Tab className="h-64" label={t('PAYMENT_DETAILS')} />
+        </Tabs>
+        <div className="p-16 sm:p-24">
+          {tabValue === 0 && <CompanyInfoTab />}
+          {tabValue === 1 && <PaymentTab />}
+        </div>
+      </>}
       scroll={isMobile ? 'normal' : 'content'}
     />
   );
