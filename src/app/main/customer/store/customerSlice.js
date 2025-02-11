@@ -6,7 +6,6 @@ export const getCustomer = createAsyncThunk(
   async (limit) => {
     const response = await axios.get(`/get-customer`);
     const data = await response.data;
-    console.log("Customer: ", response.data)
     return data;
   }
 );

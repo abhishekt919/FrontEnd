@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from "react";
 import {
-  Avatar,
+  Paper,
   Box,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableContainer,
-  Paper,
   TablePagination,
-  Modal
+  Modal,
+  Typography,
+  IconButton,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { getCustomer } from "./../store/customerSlice";
 import { showMessage } from "app/store/fuse/messageSlice";
 import { CustomActionMenu, LoadingView, NoRecordsView } from "app/shared-components/index";
 import Preview from "./customerPreview";
+import AddCardDialog from "./AddCardDialog";
+import CloseIcon from "@mui/icons-material/Close";
 
 function CustomerList(props) {
   const dispatch = useDispatch();
@@ -26,15 +29,7 @@ function CustomerList(props) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [modalData, setModalData] = useState(null);
   const [openModal, setModalOpen] = useState(false);
-
-  const onOpenModal = (item) => {
-    setModalData(item);
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  }; 
+  const [addCardModal, setAddCardModal] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -45,12 +40,28 @@ function CustomerList(props) {
       })
       .catch((error) => {
         setLoading(false);
-        dispatch(
-          showMessage({ message: "Failed to load customer", variant: "error" })
-        );
+        dispatch(showMessage({ message: "Failed to load customer", variant: "error" }));
         console.error("Error fetching customer:", error);
       });
   }, [rowsPerPage, dispatch]);
+
+  const onOpenModal = (item) => {
+    setModalData(item);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleOpenAddCardModal = (item) => {
+    setModalData(item);
+    setAddCardModal(true);
+  };
+
+  const handleCloseAddCardModal = () => {
+    setAddCardModal(false);
+  };
 
   if (isLoading) {
     return <LoadingView />;
@@ -72,30 +83,36 @@ function CustomerList(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {customer.map((row) => (
-                <TableRow key={row._id}>
+              {customer.map((row, idx) => (
+                <TableRow key={idx}>
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.id}</TableCell>
-                  <CustomActionMenu
-                    actions={[
-                      {
-                        name: "Customer Cards",
-                        iconName: "heroicons-outline:eye",
-                        isVisible: true,
-                        onClick: () => {
-                          onOpenModal(row);
+                  <TableCell>
+                    <CustomActionMenu
+                      actions={[
+                        {
+                          name: "Customer Cards",
+                          iconName: "heroicons-outline:eye",
+                          isVisible: true,
+                          onClick: () => onOpenModal(row),
                         },
-                      }
-                    ]}
-                  />
+                        {
+                          name: "Add Card",
+                          iconName: "heroicons-outline:plus-circle",
+                          isVisible: true,
+                          onClick: () => handleOpenAddCardModal(row),
+                        },
+                      ]}
+                    />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
-      {/* Pagination component */}
+
       <TablePagination
         rowsPerPageOptions={[5, 10, 15, 25]}
         component="div"
@@ -108,6 +125,7 @@ function CustomerList(props) {
           setPage(0);
         }}
       />
+      {/* For view Customer details */}
       {openModal ? (
         <Preview
           previewData={modalData}
@@ -115,8 +133,30 @@ function CustomerList(props) {
           closeModal={closeModal}
         />
       ) : null}
+
+      {/* Add Card Modal */}
+      {addCardModal && (
+        <AddCardDialog
+          open={addCardModal}
+          handleClose={handleCloseAddCardModal}
+          customer={modalData}
+        />
+      )}
+
     </Paper>
   );
 }
 
 export default CustomerList;
+
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 2,
+};

@@ -121,7 +121,7 @@ export default function PreviewPage(props) {
                                     state:
                                 </Typography>
                                 <Typography variant="body1" display="inline" className="ml-10 ">
-                                    {props.previewData?.address.country}
+                                    {props.previewData?.address.state}
                                 </Typography>
                             </div>
 
