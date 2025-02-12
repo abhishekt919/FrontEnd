@@ -50,6 +50,8 @@ function AddCardDetails(props) {
                 dispatch(addCreditCard(inputJson)).then((result) => {
                     if (result.payload.messageId === 200) {
                         dispatch(showMessage({ message: result.payload.message }));
+                        setLoading(false);
+                        props.handleClose();
                     } else {
                         setLoading(false);
                         dispatch(showMessage({ message: result.payload.message, variant: 'error' }));

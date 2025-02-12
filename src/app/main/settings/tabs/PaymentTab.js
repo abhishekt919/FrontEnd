@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Button, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import Cookies from 'js-cookie';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import CustomTooltip from "app/shared-components/CustomTooltip";
@@ -11,12 +10,7 @@ import AddCardDialog from './../stripe/AddCardDialog';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { closeDialog, openDialog } from 'app/store/fuse/dialogSlice';
 import { selectCompany } from 'app/store/companySlice';
-import { listCreditCards, selectCreditCards, deleteCreditCard } from 'app/store/shared/paymentSlice';
-import { hasModuleAccess } from "src/app/utils/helperFunctions";
-import {
-  ACCESS_PERMISSIONS,
-  USER_PERMISSIONS_CODES
-} from "app/configs/constants";
+import { listCreditCards, selectCreditCards, deleteCreditCard } from 'app/store/shared/paymentSlice'
 
 const PaymentTab = (props) => {
   const dispatch = useDispatch();
